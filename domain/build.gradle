@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'kotlin-kapt'
+
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    //Dagger
+    implementation 'com.google.dagger:dagger:2.40'
+
+    //room
+    implementation 'androidx.room:room-common:2.4.2'
+    kapt "androidx.room:room-compiler:2.4.2"
+
+    //RxJava
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxkotlin:3.0.1'
+
+    //Paging
+    implementation 'androidx.paging:paging-common-ktx:3.1.1'
+}
