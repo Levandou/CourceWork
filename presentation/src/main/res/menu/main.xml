@@ -4,8 +4,15 @@
 
     <!-- action button for search -->
     <item
+        android:id="@+id/dayFilter"
+        android:title="Сегодня"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/add"
+        android:icon="@drawable/add"
+        android:title="add"
         app:showAsAction="always"
-        android:icon="@drawable/img"
-        android:title="add" />
+        />
+
 </menu>

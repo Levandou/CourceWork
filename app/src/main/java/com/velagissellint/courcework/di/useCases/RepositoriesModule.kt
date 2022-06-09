@@ -11,13 +11,22 @@ import dagger.Provides
 @Module
 class RepositoriesModule {
     @Provides
-    fun provideDbRepository(caseDao: CaseDao, pagingSource: PagingSource): DbRepository =
-        RepositoryImpl(caseDao, pagingSource)
+    fun provideDbRepository(
+        caseDao: CaseDao,
+        //pagingSource: PagingSource
+    ): DbRepository =
+        RepositoryImpl(
+            caseDao
+            //    , pagingSource
+        )
 
     @Provides
     fun providePagingRepository(
         caseDao: CaseDao,
-        pagingSource: PagingSource
+       // pagingSource: PagingSource
     ): GetToDoPageRepository =
-        RepositoryImpl(caseDao, pagingSource)
+        RepositoryImpl(
+            caseDao
+            //, pagingSource
+        )
 }

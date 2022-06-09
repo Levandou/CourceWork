@@ -5,10 +5,10 @@ import androidx.paging.rxjava3.RxPagingSource
 import com.velagissellint.data.db.CaseDao
 import com.velagissellint.domain.models.Case
 import io.reactivex.rxjava3.core.Single
-import javax.inject.Inject
 
-class PagingSource @Inject constructor(
-    private val caseDao: CaseDao
+class PagingSource(
+    private val caseDao: CaseDao,
+    filterString: String
 ) : RxPagingSource<Int, Case>() {
     override fun getRefreshKey(state: PagingState<Int, Case>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
@@ -23,7 +23,12 @@ class PagingSource @Inject constructor(
         val position = params.key ?: 1
         val pageSize = params.loadSize
 
-        return Single.fromCallable {caseDao.getToDoList()}
+        return Single.fromCallable {
+            caseDao.getToDoList(
+                limit = pageSize,
+                offset = pageSize * (position - 1)
+            )
+        }
             .map {
                 LoadResult.Page(
                     data = it,

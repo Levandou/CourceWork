@@ -8,6 +8,17 @@
     <fragment
         android:id="@+id/toDoListFragment"
         android:name="com.velagissellint.presentation.toDoList.ToDoListFragment"
-        android:label="fragment_to_do_list"
-        tools:layout="@layout/fragment_to_do_list" />
+        tools:layout="@layout/fragment_to_do_list" >
+        <action
+            android:id="@+id/action_toDoListFragment_to_addItemFragment2"
+            app:destination="@id/addItemFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addItemFragment"
+        android:name="com.velagissellint.presentation.addItem.AddItemFragment"
+        tools:layout="@layout/fragment_add_item" >
+        <action
+            android:id="@+id/action_addItemFragment_to_toDoListFragment"
+            app:destination="@id/toDoListFragment" />
+    </fragment>
 </navigation>

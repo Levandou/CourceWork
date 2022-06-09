@@ -17,29 +17,28 @@ import io.reactivex.rxjava3.kotlin.addTo
 import javax.inject.Inject
 
 class ToDoListViewModel @Inject constructor(
-    private val addToDoItemUseCase:AddToDoItemUseCase,
+    private val addToDoItemUseCase: AddToDoItemUseCase,
     private val getToDoListUseCase: GetToDoListUseCase,
     private val getToDoPageUseCase: GetToDoPageUseCase
-) : ViewModel(){
+) : ViewModel() {
     private val disposable: CompositeDisposable = CompositeDisposable()
-    private val mutableToDoListLiveData=MutableLiveData<List<Case>>()
-    val toDoListLiveData=mutableToDoListLiveData as LiveData<List<Case>>
+    private val mutableToDoListLiveData = MutableLiveData<List<Case>>()
+    val toDoListLiveData = mutableToDoListLiveData as LiveData<List<Case>>
     private val mutableToDoListPaging = MutableLiveData<PagingData<Case>>()
     val toDoListPaging =
         mutableToDoListPaging as LiveData<PagingData<Case>>
 
-    private fun getListCaseFromDb(){
-        mutableToDoListLiveData.value=getToDoListUseCase.getToDoList()
-        Log.d("qwer",mutableToDoListLiveData.value.toString())
+    private fun getListCaseFromDb() {
+       // mutableToDoListLiveData.value = getToDoListUseCase.getToDoList()
+        Log.d("qwer", mutableToDoListLiveData.value.toString())
     }
 
-    fun addItemToDb(case: Case){
+    fun addItemToDb(case: Case) {
         addToDoItemUseCase.addToDoItem(case)
     }
 
     fun loadToDoList() {
         getToDoPageUseCase.getToDoPage().cachedIn(viewModelScope)
-            .take(1)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mutableToDoListPaging.value = it
@@ -50,6 +49,6 @@ class ToDoListViewModel @Inject constructor(
 
     init {
         loadToDoList()
-        getListCaseFromDb()
+       // getListCaseFromDb()
     }
 }

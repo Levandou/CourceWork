@@ -2,4 +2,15 @@
     <string name="app_name">CourceWork</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_add">Добавить</string>
+    <string name="hint_text">Введите описание</string>
+    <string name="example_of_date">28.05.2022</string>
+    <string name="hint_for_date">Выбирите дату</string>
+    <string name="hint_for_spinner">Напомнить о</string>
+
+    <string-array name="types">
+        <item>День рождения</item>
+        <item>Встреча</item>
+        <item>Дело</item>
+    </string-array>
 </resources>

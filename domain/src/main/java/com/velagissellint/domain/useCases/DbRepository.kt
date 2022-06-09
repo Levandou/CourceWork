@@ -5,5 +5,5 @@ import com.velagissellint.domain.models.Case
 interface DbRepository {
     fun addToDoItem(case: Case)
 
-    fun getToDoList():List<Case>
+    fun getToDoList(limit: Int, offset: Int):List<Case>
 }

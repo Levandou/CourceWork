@@ -4,7 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".toDoList.ToDoListFragment">
+    tools:context=".toDoList.ToDoListFragment"
+    android:background="#c4c4c4">
+
+    <FrameLayout
+        android:id="@+id/fl_calendar_filter"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <CalendarView
+            android:id="@+id/calendarFilter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:selectedWeekBackgroundColor="#ff0000"
+            android:visibility="visible"
+            android:weekNumberColor="#0000ff"
+            android:weekSeparatorLineColor="#00ff00"
+            tools:visibility="visible" />
+
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_to_do"

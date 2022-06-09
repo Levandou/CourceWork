@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="140dp"
+    android:background="#c4c4c4">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_back_ground_white" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5.3">
+    android:weightSum="5.3"
+    android:layout_margin="10dp">
 
     <TextView
         android:id="@+id/tv_type_of_to_do"
@@ -52,3 +64,5 @@
         android:textSize="13dp" />
 
 </LinearLayout>
+
+</FrameLayout>
