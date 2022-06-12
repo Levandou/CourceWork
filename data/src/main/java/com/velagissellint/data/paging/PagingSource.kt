@@ -10,6 +10,7 @@ class PagingSource(
     private val caseDao: CaseDao,
     filterString: String
 ) : RxPagingSource<Int, Case>() {
+    val stringFilter = filterString
     override fun getRefreshKey(state: PagingState<Int, Case>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
         val page = state.closestPageToPosition(anchorPosition)
@@ -23,10 +24,18 @@ class PagingSource(
         val position = params.key ?: 1
         val pageSize = params.loadSize
 
+        val a = caseDao.getPartsToDoList(
+            limit = pageSize,
+            offset = pageSize * (position - 1),
+            stringFilter = stringFilter
+        )
+
         return Single.fromCallable {
-            caseDao.getToDoList(
+            //   caseDao.getToDoList(
+            caseDao.getPartsToDoList(
                 limit = pageSize,
-                offset = pageSize * (position - 1)
+                offset = pageSize * (position - 1),
+                stringFilter = stringFilter
             )
         }
             .map {

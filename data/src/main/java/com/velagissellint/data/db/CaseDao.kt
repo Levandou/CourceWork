@@ -9,6 +9,9 @@ import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface CaseDao {
+    @Query("SELECT * FROM to_do_list WHERE date == :stringFilter ORDER BY id LIMIT :limit OFFSET :offset")
+    fun getPartsToDoList(limit: Int, offset: Int, stringFilter: String): List<Case>
+
     @Query("SELECT * FROM to_do_list ORDER BY id LIMIT :limit OFFSET :offset")
     fun getToDoList(limit: Int, offset: Int): List<Case>
 

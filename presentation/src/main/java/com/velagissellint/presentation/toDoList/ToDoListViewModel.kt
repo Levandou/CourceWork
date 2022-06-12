@@ -11,9 +11,11 @@ import com.velagissellint.domain.models.Case
 import com.velagissellint.domain.useCases.AddToDoItemUseCase
 import com.velagissellint.domain.useCases.GetToDoListUseCase
 import com.velagissellint.domain.useCases.paging.GetToDoPageUseCase
+import com.velagissellint.presentation.convertDateForUser
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import java.util.*
 import javax.inject.Inject
 
 class ToDoListViewModel @Inject constructor(
@@ -29,7 +31,7 @@ class ToDoListViewModel @Inject constructor(
         mutableToDoListPaging as LiveData<PagingData<Case>>
 
     private fun getListCaseFromDb() {
-       // mutableToDoListLiveData.value = getToDoListUseCase.getToDoList()
+        // mutableToDoListLiveData.value = getToDoListUseCase.getToDoList()
         Log.d("qwer", mutableToDoListLiveData.value.toString())
     }
 
@@ -37,8 +39,8 @@ class ToDoListViewModel @Inject constructor(
         addToDoItemUseCase.addToDoItem(case)
     }
 
-    fun loadToDoList() {
-        getToDoPageUseCase.getToDoPage().cachedIn(viewModelScope)
+    fun loadToDoList(date: String) {
+        getToDoPageUseCase.getToDoPage(date).cachedIn(viewModelScope)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 mutableToDoListPaging.value = it
@@ -48,7 +50,15 @@ class ToDoListViewModel @Inject constructor(
     }
 
     init {
-        loadToDoList()
-       // getListCaseFromDb()
+        Calendar.getInstance().apply {
+            loadToDoList(
+                convertDateForUser(
+                    get(Calendar.DAY_OF_MONTH),
+                    get(Calendar.MONTH),
+                    get(Calendar.YEAR)
+                )
+            )
+        }
+        // getListCaseFromDb()
     }
 }

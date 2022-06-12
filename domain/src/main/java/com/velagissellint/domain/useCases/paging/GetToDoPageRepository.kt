@@ -5,5 +5,5 @@ import com.velagissellint.domain.models.Case
 import io.reactivex.rxjava3.core.Flowable
 
 interface GetToDoPageRepository {
-    fun getToDoPage(): Flowable<PagingData<Case>>
+    fun getToDoPage(date: String): Flowable<PagingData<Case>>
 }

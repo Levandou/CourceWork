@@ -20,7 +20,7 @@ class RepositoryImpl(
     override fun getToDoList(limit: Int, offset: Int): List<Case> =
         caseDao.getToDoList(limit, offset)
 
-    override fun getToDoPage() = Pager(
+    override fun getToDoPage(date: String) = Pager(
         config = PagingConfig(
             pageSize = 20,
             prefetchDistance = 5,
@@ -28,6 +28,6 @@ class RepositoryImpl(
             initialLoadSize = 20,
             maxSize = 100
         ),
-        pagingSourceFactory = { PagingSource(caseDao, "") }
+        pagingSourceFactory = { PagingSource(caseDao, date) }
     ).flowable
 }

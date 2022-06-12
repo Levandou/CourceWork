@@ -19,15 +19,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.velagissellint.presentation.R
 import com.velagissellint.presentation.ViewModelFactory
 import com.velagissellint.presentation.containersDi.ContainerAppContainer
+import com.velagissellint.presentation.convertDateForUser
 import com.velagissellint.presentation.toDoList.adapters.ToDoListAdapter
+import java.util.*
 import javax.inject.Inject
-
 
 class ToDoListFragment : Fragment() {
     @Inject
     lateinit var factory: ViewModelFactory
     lateinit var toDoListViewModel: ToDoListViewModel
 
+    lateinit var calendarView: CalendarView
     lateinit var rv: RecyclerView
     lateinit var calendarFrame: FrameLayout
     private lateinit var navController: NavController
@@ -53,13 +55,14 @@ class ToDoListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         calendarFrame = view.findViewById(R.id.fl_calendar_filter)
+        calendarView = view.findViewById(R.id.calendarFilter)
         setHasOptionsMenu(true)
         setupRecyclerView(view)
         observeToDoListPaging()
     }
 
     private fun setupRecyclerView(view: View) {
-         rv = view.findViewById(R.id.rv_to_do)
+        rv = view.findViewById(R.id.rv_to_do)
         adapter = ToDoListAdapter()
         rv.adapter = adapter
     }
@@ -73,6 +76,7 @@ class ToDoListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.main, menu)
+
 //        val positionOfMenuItem = 0 //or any other postion
 //
 //        val item = menu.getItem(positionOfMenuItem)
@@ -83,11 +87,33 @@ class ToDoListFragment : Fragment() {
 //        item.title = s
     }
 
+    private fun clickOnDay(item: MenuItem) {
+        calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            calendarFrame.isVisible = false
+            rv.isVisible = true
+            val convertedData = convertDateForUser(dayOfMonth, month, year)
+            toDoListViewModel.loadToDoList(convertedData)
+            Calendar.getInstance().apply {
+                if (get(Calendar.YEAR) == year && get(Calendar.MONTH) == month)
+                    when (dayOfMonth) {
+                        get(Calendar.DAY_OF_MONTH) -> item.title = "Сегодня"
+                        get(Calendar.DAY_OF_MONTH) + 1 -> item.title = "Завтра"
+                        get(Calendar.DAY_OF_MONTH) - 1 -> item.title = "Вчера"
+                        else -> item.title = convertedData
+                    }
+                else
+                    item.title = convertedData
+            }
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.dayFilter -> {
-                calendarFrame.isVisible=true
-                rv.isVisible=false
+                calendarFrame.isVisible = true
+                rv.isVisible = false
+
+                clickOnDay(item)
 
             }
             R.id.add -> navController.navigate(R.id.action_toDoListFragment_to_addItemFragment2)
