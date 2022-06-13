@@ -15,12 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.velagissellint.presentation.R
 import com.velagissellint.presentation.ViewModelFactory
 import com.velagissellint.presentation.containersDi.ContainerAppContainer
 import com.velagissellint.presentation.convertDateForUser
 import com.velagissellint.presentation.toDoList.adapters.ToDoListAdapter
+import com.velagissellint.presentation.toDoList.adapters.ToDoListLoadStateAdapter
 import java.util.*
 import javax.inject.Inject
 
@@ -45,7 +47,6 @@ class ToDoListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         navController = NavHostFragment.findNavController(this)
         toDoListViewModel = ViewModelProvider(this, factory)
             .get(ToDoListViewModel::class.java)
@@ -65,6 +66,26 @@ class ToDoListFragment : Fragment() {
         rv = view.findViewById(R.id.rv_to_do)
         adapter = ToDoListAdapter()
         rv.adapter = adapter
+        rv.adapter = adapter.withLoadStateFooter(ToDoListLoadStateAdapter { adapter.retry() })
+        val callback = object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ) = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                toDoListViewModel.deleteFromDb(
+                    toDoListViewModel.toDoList[viewHolder.bindingAdapterPosition]
+                )
+                adapter.refresh()
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(rv)
     }
 
     private fun observeToDoListPaging() {
@@ -76,15 +97,6 @@ class ToDoListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.main, menu)
-
-//        val positionOfMenuItem = 0 //or any other postion
-//
-//        val item = menu.getItem(positionOfMenuItem)
-//        val s: SpannableString = SpannableString(item.title)
-//
-//        s.setSpan(AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), 0, s.length, 0)
-//
-//        item.title = s
     }
 
     private fun clickOnDay(item: MenuItem) {
@@ -112,9 +124,7 @@ class ToDoListFragment : Fragment() {
             R.id.dayFilter -> {
                 calendarFrame.isVisible = true
                 rv.isVisible = false
-
                 clickOnDay(item)
-
             }
             R.id.add -> navController.navigate(R.id.action_toDoListFragment_to_addItemFragment2)
         }

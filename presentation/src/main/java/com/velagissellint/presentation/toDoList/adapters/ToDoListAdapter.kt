@@ -3,6 +3,7 @@ package com.velagissellint.presentation.toDoList.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.velagissellint.domain.models.Case
 import com.velagissellint.presentation.R
 import com.velagissellint.presentation.toDoList.ToDoListDiffCallback

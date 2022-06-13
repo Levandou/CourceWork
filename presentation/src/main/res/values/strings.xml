@@ -7,9 +7,12 @@
     <string name="example_of_date">28.05.2022</string>
     <string name="hint_for_date">Выбирите дату</string>
     <string name="hint_for_spinner">Напомнить о</string>
+    <string name="load_error">Ошибка загрузки</string>
+    <string name="try_again">Попробовать снова</string>
 
     <string-array name="types">
         <item>День рождения</item>
+        <item>Позвонить</item>
         <item>Встреча</item>
         <item>Дело</item>
     </string-array>

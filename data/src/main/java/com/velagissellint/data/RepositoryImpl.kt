@@ -17,8 +17,12 @@ class RepositoryImpl(
         caseDao.addToDoList(case)
     }
 
-    override fun getToDoList(limit: Int, offset: Int): List<Case> =
-        caseDao.getToDoList(limit, offset)
+    override fun getToDoList(stringFilter: String): List<Case> =
+        caseDao.getToDoList(stringFilter)
+
+    override fun deleteFromDb(case: Case) {
+        caseDao.deleteToDoItemFromDb(case)
+    }
 
     override fun getToDoPage(date: String) = Pager(
         config = PagingConfig(
